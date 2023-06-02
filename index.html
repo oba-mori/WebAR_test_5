@@ -4,7 +4,7 @@ ARButtonを使用すると、デバイスがWebXRをサポートしているか�
 サポートしていない場合は、ボタンにAR NOT AUPPORTED と表示される
 
 ・hittest
-
+平面検知
  -->
 
 
@@ -47,8 +47,23 @@ https://chat.openai.com/c/4086099e-a2d7-44a7-9215-47eedcc1615e
 
       const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
+      // シーンを作成します。
+      const scene = new THREE.Scene();
 
-      document.body.appendChild(ARButton.createButton(renderer, { requiredFeatures: ["hit-test"] }));          
+
+      // ARセッションの開始をトリガーするためのボタンを追加します。
+      const startARButton = document.createElement('button');
+      startARButton.textContent = 'Start AR Session';
+      document.body.appendChild(startARButton);
+
+      // ボタンクリックでAEセッション開始
+      startARButton.addEventListener('click', function () {
+        startARSession();
+      });
+
+
+      // // ARButtonを作成し、ARセッションを開始します。
+      // document.body.appendChild(ARButton.createButton(renderer, { requiredFeatures: ["hit-test"] }));          
 
 
       // // ARButtonを作成し、ARセッションを開始します。
@@ -61,35 +76,38 @@ https://chat.openai.com/c/4086099e-a2d7-44a7-9215-47eedcc1615e
       // });
 
 
-      // ARセッションが開始された後、平面検知を有効化します。
       function startARSession() {
         // ARセッションを開始するコード
         // ...
-        
+
         // 平面検知を有効化する
         const session = renderer.xr.getSession();
         session.addEventListener('select', onSelect);
         session.addEventListener('selectstart', onSelectStart);
         session.addEventListener('selectend', onSelectEnd);
+
+        // 平面のマーク用のジオメトリやマテリアルの作成
+        const markGeometry = new THREE.SphereGeometry(0.05);
+        const markMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+
+        function onSelect(event) {
+          // 平面上にオブジェクトを配置するコード
+          const hitPoint = event.hitPoint;
+          const mark = new THREE.Mesh(markGeometry, markMaterial);
+          mark.position.copy(hitPoint);
+          scene.add(mark);
+        }
+
+        function onSelectStart(event) {
+          // オブジェクト配置のための準備処理を行うコード
+          // ...
+        }
+
+        function onSelectEnd(event) {
+          // オブジェクト配置のための後処理を行うコード
+          // ...
+        }
       }
-
-      function onSelect(event) {
-        // 平面上にオブジェクトを配置するコード
-        // ...
-      }
-
-      function onSelectStart(event) {
-        // オブジェクト配置のための準備処理を行うコード
-        // ...
-      }
-
-      function onSelectEnd(event) {
-        // オブジェクト配置のための後処理を行うコード
-        // ...
-      }
-
-
-
 
  
     </script>
