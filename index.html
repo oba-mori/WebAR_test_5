@@ -1,8 +1,10 @@
                                                                <!-- 
-ARButton
-
+・ARButton
 ARButtonを使用すると、デバイスがWebXRをサポートしているかどうかを確認し、サポートされている場合はARセッションを開始するためのボタンを簡単に作成することができます。
 サポートしていない場合は、ボタンにAR NOT AUPPORTED と表示される
+
+・hittest
+
  -->
 
 
@@ -44,7 +46,9 @@ https://chat.openai.com/c/4086099e-a2d7-44a7-9215-47eedcc1615e
       document.body.appendChild(renderer.domElement);
 
       const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-      // document.body.appendChild(ARButton.createButton(renderer, { requiredFeatures: ["hit-test"] }));          
+
+      
+      document.body.appendChild(ARButton.createButton(renderer, { requiredFeatures: ["hit-test"] }));          
 
 
       // ARButtonを作成し、ARセッションを開始します。
