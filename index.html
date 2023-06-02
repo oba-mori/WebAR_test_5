@@ -57,9 +57,27 @@ https://chat.openai.com/c/4086099e-a2d7-44a7-9215-47eedcc1615e
       startARButton.classList.add('ar-button'); // CSSクラスを追加
       document.body.appendChild(startARButton);
 
-      // ボタンクリックでAEセッション開始
+      
+      // // ボタンクリックでAEセッション開始
+      // startARButton.addEventListener('click', function () {
+      //   startARSession();
+      // });
+
+
+      // ボタンクリックでARセッションを開始します。
       startARButton.addEventListener('click', function () {
-        startARSession();
+        if (renderer.xr.isPresenting) {
+          startARSession();
+        } else {
+          renderer.xr
+            .startSession('immersive-ar', { requiredFeatures: ['hit-test'] })
+            .then(() => {
+              startARSession();
+            })
+            .catch((error) => {
+              console.error('Failed to start AR session:', error);
+            });
+        }
       });
 
 
