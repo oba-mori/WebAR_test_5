@@ -54,6 +54,7 @@ https://chat.openai.com/c/4086099e-a2d7-44a7-9215-47eedcc1615e
       // ARセッションの開始をトリガーするためのボタンを追加します。
       const startARButton = document.createElement('button');
       startARButton.textContent = 'Start AR Session';
+      startARButton.classList.add('ar-button'); // CSSクラスを追加
       document.body.appendChild(startARButton);
 
       // ボタンクリックでAEセッション開始
@@ -111,6 +112,19 @@ https://chat.openai.com/c/4086099e-a2d7-44a7-9215-47eedcc1615e
 
  
     </script>
+
+    <!-- ボタンのレイアウト -->
+    <style>
+      button.ar-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9999;
+      }
+    </style>
+
+
+
   </body>
 </html>
    
