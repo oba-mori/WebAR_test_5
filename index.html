@@ -47,18 +47,18 @@ https://chat.openai.com/c/4086099e-a2d7-44a7-9215-47eedcc1615e
 
       const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-      
+
       document.body.appendChild(ARButton.createButton(renderer, { requiredFeatures: ["hit-test"] }));          
 
 
-      // ARButtonを作成し、ARセッションを開始します。
-      ARButton.createButton(renderer, { requiredFeatures: ['hit-test'] }).then((button) => {
-        document.body.appendChild(button);
-        button.addEventListener('click', function () {
-          // ARセッションを開始するコード
-          // ...
-        });
-      });
+      // // ARButtonを作成し、ARセッションを開始します。
+      // ARButton.createButton(renderer, { requiredFeatures: ['hit-test'] }).then((button) => {
+      //   document.body.appendChild(button);
+      //   button.addEventListener('click', function () {
+      //     // ARセッションを開始するコード
+      //     // ...
+      //   });
+      // });
 
 
       // ARセッションが開始された後、平面検知を有効化します。
