@@ -73,14 +73,17 @@ https://chat.openai.com/c/4086099e-a2d7-44a7-9215-47eedcc1615e
           navigator.xr
             .requestSession('immersive-ar', { requiredFeatures: ['hit-test'] })
             .then((session) => {
-              startARSession();
+              // セッションを開始する前にセッションオブジェクトを取得します
+              const xrSession = renderer.xr.getSession();
+              if (xrSession) {
+                startARSession(xrSession);
+              }
             })
             .catch((error) => {
               console.error('Failed to start AR session:', error);
             });
         }
       });
-
 
       // // ARButtonを作成し、ARセッションを開始します。
       // document.body.appendChild(ARButton.createButton(renderer, { requiredFeatures: ["hit-test"] }));          
