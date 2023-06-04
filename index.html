@@ -57,11 +57,12 @@ https://chat.openai.com/c/4086099e-a2d7-44a7-9215-47eedcc1615e
       startARButton.classList.add('ar-button'); // CSSクラスを追加
       document.body.appendChild(startARButton);
 
-      
+
       // // ボタンクリックでAEセッション開始
       // startARButton.addEventListener('click', function () {
       //   startARSession();
       // });
+
 
 
       // ボタンクリックでARセッションを開始します。
@@ -69,9 +70,9 @@ https://chat.openai.com/c/4086099e-a2d7-44a7-9215-47eedcc1615e
         if (renderer.xr.isPresenting) {
           startARSession();
         } else {
-          renderer.xr
-            .startSession('immersive-ar', { requiredFeatures: ['hit-test'] })
-            .then(() => {
+          navigator.xr
+            .requestSession('immersive-ar', { requiredFeatures: ['hit-test'] })
+            .then((session) => {
               startARSession();
             })
             .catch((error) => {
@@ -128,7 +129,39 @@ https://chat.openai.com/c/4086099e-a2d7-44a7-9215-47eedcc1615e
         }
       }
 
+
+
+
  
+      // function startARSession() {
+      //   // ARセッションを開始するコード
+      //   navigator.xr.isSessionSupported('immersive-ar').then((supported) => {
+      //     if (supported) {
+      //       navigator.xr.requestSession('immersive-ar', { requiredFeatures: ['hit-test'] }).then((session) => {
+      //         session.addEventListener('select', onSelect);
+      //         session.addEventListener('selectstart', onSelectStart);
+      //         session.addEventListener('selectend', onSelectEnd);
+      //         // 平面検知などのセッション設定を行います
+      //         // ...
+
+      //         // セッションを開始する
+      //         renderer.xr.setSession(session);
+      //       }).catch((error) => {
+      //         console.error('AR session request error:', error);
+      //       });
+      //     } else {
+      //       console.error('AR not supported');
+      //     }
+      //   });
+      // }
+
+
+
+
+
+
+
+
     </script>
 
     <!-- ボタンのレイアウト -->
