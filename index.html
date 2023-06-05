@@ -23,78 +23,83 @@ https://chat.openai.com/c/4086099e-a2d7-44a7-9215-47eedcc1615e
  -->
 
 
-
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AR 3D Model Example</title>
-    <style>
-      body { margin: 0; overflow: hidden; }
-    </style>
-  </head>
-
-  <body>
-    <script type="module">
-      import * as THREE from 'https://cdn.skypack.dev/three@0.135.0/build/three.module.js';
-      import { ARButton } from 'https://cdn.skypack.dev/three@0.135.0/examples/jsm/webxr/ARButton.js';
-      import { GLTFLoader } from 'https://cdn.skypack.dev/three@0.135.0/examples/jsm/loaders/GLTFLoader.js';
-
-      const renderer = new THREE.WebGLRenderer({ antialias: true });
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      document.body.appendChild(renderer.domElement);
-
-      document.body.appendChild(ARButton.createButton(renderer));
-
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-       camera.position.set(0, 0, 5);
-
-      const loader = new GLTFLoader();
-      loader.load('./cube_medium.glb', (gltf) => {
-        const model = gltf.scene;
-        scene.add(model);
-      });
-
-      function onAnimationFrame() {
-        renderer.setAnimationLoop(() => {
-          // ARセッションがアクティブな場合のみ更新する
-          if (renderer.xr.isPresenting) {
-            // フレームごとの処理を記述
-          }
-        });
-      }
-
-      function onSessionStart() {
-        // ARセッションが開始された時の処理を記述
-      }
-
-      function onSessionEnd() {
-        // ARセッションが終了した時の処理を記述
-      }
-      const button = ARButton.createButton(renderer);
-       button.addEventListener('sessionstart', onSessionStart);
-       button.addEventListener('sessionend', onSessionEnd);
-       document.body.appendChild(button);
-
-      function render() {
-        renderer.render(scene, camera);
-      }
-
-      function animate() {
-        requestAnimationFrame(animate);
-        render();
-      }
-
-      animate();
-    </script>
-  </body>
-</html>
-
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>AR 3D Model Example</title>
+   <style>
+     body { margin: 0; overflow: hidden; }
+   </style>
+ </head>
  
-
-
+ <body>
+   <script type="module">
+     import * as THREE from 'https://cdn.skypack.dev/three@0.135.0/build/three.module.js';
+     import { ARButton } from 'https://cdn.skypack.dev/three@0.135.0/examples/jsm/webxr/ARButton.js';
+     import { GLTFLoader } from 'https://cdn.skypack.dev/three@0.135.0/examples/jsm/loaders/GLTFLoader.js';
+ 
+     const renderer = new THREE.WebGLRenderer({ antialias: true });
+     renderer.setSize(window.innerWidth, window.innerHeight);
+     document.body.appendChild(renderer.domElement);
+ 
+     // レンダラーにXRレンダリングコンテキストを設定
+     renderer.xr.enabled = true;
+ 
+     // ARボタンを作成してボディに追加
+     const arButton = ARButton.createButton(renderer);
+     document.body.appendChild(arButton);
+ 
+     const scene = new THREE.Scene();
+     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+     camera.position.set(0, 0, 5);
+     scene.add(camera);
+ 
+     const loader = new GLTFLoader();
+     loader.load('./cube_medium.glb', (gltf) => {
+       const model = gltf.scene;
+       scene.add(model);
+     });
+ 
+     // XRアニメーションフレームコールバック内でのみ更新する
+     function onAnimationFrame() {
+       renderer.setAnimationLoop(() => {
+         if (renderer.xr.isPresenting) {
+           // フレームごとの処理を記述
+           render();
+         }
+       });
+     }
+ 
+     function onSessionStart() {
+       // ARセッションが開始された時の処理を記述
+     }
+ 
+     function onSessionEnd() {
+       // ARセッションが終了した時の処理を記述
+     }
+ 
+     // ARボタンのクリックイベントリスナーを設定
+     arButton.addEventListener('sessionstart', onSessionStart);
+     arButton.addEventListener('sessionend', onSessionEnd);
+ 
+     // シーンをレンダリングする関数
+     function render() {
+       renderer.render(scene, camera);
+     }
+ 
+     // アニメーションループを開始
+     function animate() {
+       requestAnimationFrame(animate);
+       onAnimationFrame();
+     }
+ 
+     animate();
+   </script>
+ </body>
+ </html>
+ 
 
  
   
