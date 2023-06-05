@@ -24,7 +24,6 @@ https://chat.openai.com/c/4086099e-a2d7-44a7-9215-47eedcc1615e
 
  
 
-
  <!DOCTYPE html>
  <html lang="en">
  <head>
@@ -49,9 +48,8 @@ https://chat.openai.com/c/4086099e-a2d7-44a7-9215-47eedcc1615e
      // レンダラーにXRレンダリングコンテキストを設定
      renderer.xr.enabled = true;
  
-     // ARボタンを作成してボディに追加
-     const arButton = new ARButton(renderer);
-     document.body.appendChild(arButton.domElement);
+     // ARボタンを作成
+     const arButton = ARButton.createButton(renderer);
  
      const scene = new THREE.Scene();
      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -86,6 +84,9 @@ https://chat.openai.com/c/4086099e-a2d7-44a7-9215-47eedcc1615e
      arButton.addEventListener('sessionstart', onSessionStart);
      arButton.addEventListener('sessionend', onSessionEnd);
  
+     // ボディにARボタンを追加
+     document.body.appendChild(arButton);
+ 
      // シーンをレンダリングする関数
      function render() {
        renderer.render(scene, camera);
@@ -102,18 +103,7 @@ https://chat.openai.com/c/4086099e-a2d7-44a7-9215-47eedcc1615e
  </body>
  </html>
  
-  
  
- 
- 
- 
-
-
-
-
-
-
-
 
 
 
