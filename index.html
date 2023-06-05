@@ -24,94 +24,74 @@ https://chat.openai.com/c/4086099e-a2d7-44a7-9215-47eedcc1615e
 
  
 
- <!DOCTYPE html>
- <html lang="en">
- <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js AR Example</title>
+    <style>
+      body { margin: 0; overflow: hidden; }
+    </style>
+  </head>
+
+  <body>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script> -->
+    <!-- <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/jsm/webxr/ARButton.js"></script> -->
    
-   <meta http-equiv="Permissions-Policy" content="interest-cohort=()"/>
+    <script type="module">
+      // Three.module.js用
+      import * as THREE from 'https://cdn.skypack.dev/three@0.135.0/build/three.module.js';
+
+      // ARButton用
+      import { ARButton } from 'https://cdn.skypack.dev/three@0.135.0/examples/jsm/webxr/ARButton.js';
+     
+      //  GLTFLoader用
+      import { GLTFLoader } from 'https://cdn.skypack.dev/three@0.135.0/examples/jsm/loaders/GLTFLoader.js';
 
 
-   <title>AR 3D Model Example</title>
-   <style>
-     body { margin: 0; overflow: hidden; }
-   </style>
- </head>
- 
- <body>
-   <script type="module">
-     import * as THREE from 'https://cdn.skypack.dev/three@0.135.0/build/three.module.js';
-     import { ARButton } from 'https://cdn.skypack.dev/three@0.135.0/examples/jsm/webxr/ARButton.js';
-     import { GLTFLoader } from 'https://cdn.skypack.dev/three@0.135.0/examples/jsm/loaders/GLTFLoader.js';
- 
-     const renderer = new THREE.WebGLRenderer({ antialias: true });
-     renderer.setSize(window.innerWidth, window.innerHeight);
-     document.body.appendChild(renderer.domElement);
- 
-     // レンダラーにXRレンダリングコンテキストを設定
-     renderer.xr.enabled = true;
- 
-     // ARボタンを作成
-     const arButton = ARButton.createButton(renderer);
- 
-     const scene = new THREE.Scene();
-     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-     camera.position.set(0, 0, 5);
-     scene.add(camera);
- 
-     const loader = new GLTFLoader();
-     loader.load('./cube_medium.glb', (gltf) => {
-       const model = gltf.scene;
-       scene.add(model);
-     });
- 
-     // XRアニメーションフレームコールバック内でのみ更新する
-// XRアニメーションフレームコールバック内でのみ更新する
-function onAnimationFrame(timestamp, frame) {
-  renderer.setAnimationLoop(() => {
-    if (renderer.xr.isPresenting) {
-      // フレームごとの処理を記述
-      renderer.clear();
-      renderer.render(scene, camera);
-    }
-  });
-}
 
- 
-     function onSessionStart() {
-       // ARセッションが開始された時の処理を記述
-     }
- 
-     function onSessionEnd() {
-       // ARセッションが終了した時の処理を記述
-     }
- 
-     // ARボタンのクリックイベントリスナーを設定
-     arButton.addEventListener('sessionstart', onSessionStart);
-     arButton.addEventListener('sessionend', onSessionEnd);
- 
-     // ボディにARボタンを追加
-     document.body.appendChild(arButton);
- 
-     // シーンをレンダリングする関数
-     function render() {
-       renderer.render(scene, camera);
-     }
- 
-     // アニメーションループを開始
-     function animate() {
-       requestAnimationFrame(animate);
-       onAnimationFrame();
-     }
- 
-     animate();
-   </script>
- </body>
- </html>
+
+      // ARButtonを使用したコードを記述する
+
+
+      // WebGLRendererインスタンスを作成(antialias: true はオプション(エッジの滑らかさを有効))
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      // 描画領域のサイズ(幅と高さ)
+      // windowを付けることで、ウィンドウが変更された場合もThree.jsの描画が適切に調整される
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      // Three.jsの3DシーンをHTMLページ上に表示
+      // 親要素.appendChild(子要素(追加するもの));
+      // Three.jsの描画領域をHTMLドキュメントの<body>要素に追加し、描画内容を表示するための領域を提供する
+      // appendChild:指定された要素を親要素の子要素として追加する
+      // document.body:HTMLドキュメントの<body>要素
+      // renderer.domElement:Three.jsのWebGLRendererが生成した描画領域を表す
+      document.body.appendChild(renderer.domElement);
+      // ARButton(WebXRをサポートするデバイスでARセッションを開始するためのボタン)をHTMLページに表示
+      document.body.appendChild(ARButton.createButton(renderer));
+    </script>
+  </body>
+</html>
  
  
 
+ 
 
 
 
