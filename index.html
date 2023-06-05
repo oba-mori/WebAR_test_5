@@ -17,164 +17,6 @@ https://chat.openai.com/c/4086099e-a2d7-44a7-9215-47eedcc1615e
  -->
 
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Three.js AR Example</title>
-    <style>
-      body { margin: 0; overflow: hidden; }
-    </style>
-  </head>
-
-  <body>
-    <!-- ライブラリ -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script> -->
-    <!-- <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/jsm/webxr/ARButton.js"></script> -->
-    
-
-
-
-
-    
-    <script type="module">
-      // Three.module.js用ライブラリ
-      import * as THREE from 'https://cdn.skypack.dev/three@0.135.0/build/three.module.js';
-      // ARButton用ライブラリ
-      import { ARButton } from 'https://cdn.skypack.dev/three@0.135.0/examples/jsm/webxr/ARButton.js';
-
-
-      // WebGLRendererを作成し、カメラを設定します。
-      const renderer = new THREE.WebGLRenderer({ antialias: true });
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      document.body.appendChild(renderer.domElement);
-
-      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-
-      // シーンを作成します。
-      const scene = new THREE.Scene();
-
-
-      // ARセッションの開始をトリガーするためのボタンを追加します。
-      const startARButton = document.createElement('button');
-      startARButton.textContent = 'Start AR Session';
-      startARButton.classList.add('ar-button'); // CSSクラスを追加
-      document.body.appendChild(startARButton);
-
-
-      // ボタンクリックでAEセッション開始
-      startARButton.addEventListener('click', function () {
-        startARSession();
-      });
-
-
-
-
-// ボタンクリックでARセッションを開始します。
-startARButton.addEventListener('click', function () {
-  navigator.xr
-    .requestSession('immersive-ar', { requiredFeatures: ['hit-test'] })
-    .then((session) => {
-      renderer.xr.setSession(session); // セッションをrendererに設定
-      startARSession(session); // ARセッションを開始する
-    })
-    .catch((error) => {
-      console.error('Failed to start AR session:', error);
-    });
-});
-
-
-
-      // // ARButtonを作成し、ARセッションを開始します。
-      // document.body.appendChild(ARButton.createButton(renderer, { requiredFeatures: ["hit-test"] }));          
-
-
-      // // ARButtonを作成し、ARセッションを開始します。
-      // ARButton.createButton(renderer, { requiredFeatures: ['hit-test'] }).then((button) => {
-      //   document.body.appendChild(button);
-      //   button.addEventListener('click', function () {
-      //     // ARセッションを開始するコード
-      //     // ...
-      //   });
-      // });
-
-
-      // function startARSession() {
-      //   // ARセッションを開始するコード
-      //   // ...
-
-      //   // 平面検知を有効化する
-      //   const session = renderer.xr.getSession();
-      //   session.addEventListener('select', onSelect);
-      //   session.addEventListener('selectstart', onSelectStart);
-      //   session.addEventListener('selectend', onSelectEnd);
-
-      //   // 平面のマーク用のジオメトリやマテリアルの作成
-      //   const markGeometry = new THREE.SphereGeometry(0.05);
-      //   const markMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-
-      //   function onSelect(event) {
-      //     // 平面上にオブジェクトを配置するコード
-      //     const hitPoint = event.hitPoint;
-      //     const mark = new THREE.Mesh(markGeometry, markMaterial);
-      //     mark.position.copy(hitPoint);
-      //     scene.add(mark);
-      //   }
-
-      //   function onSelectStart(event) {
-      //     // オブジェクト配置のための準備処理を行うコード
-      //     // ...
-      //   }
-
-      //   function onSelectEnd(event) {
-      //     // オブジェクト配置のための後処理を行うコード
-      //     // ...
-      //   }
-      // }
-
-
-
-
-      function startARSession(session) {
-  // 平面検知やオブジェクトの配置などのARセッションの設定を行います
-  // ...
-
-  session.addEventListener('select', onSelect);
-  session.addEventListener('selectstart', onSelectStart);
-  session.addEventListener('selectend', onSelectEnd);
-
-  // カメラの設定
-  session.updateRenderState({ baseLayer: new XRWebGLLayer(session, renderer.domElement) });
-
-  // セッションを開始します
-  session.requestAnimationFrame(onAnimationFrame);
-
-  function onSelect(event) {
-    // 平面上にオブジェクトを配置するコード
-    const hitPoint = event.hitPoint;
-    const mark = new THREE.Mesh(markGeometry, markMaterial);
-    mark.position.copy(hitPoint);
-    scene.add(mark);
-  }
-
-  function onSelectStart(event) {
-    // オブジェクト配置のための準備処理を行うコード
-    // ...
-  }
-
-  function onSelectEnd(event) {
-    // オブジェクト配置のための後処理を行うコード
-    // ...
-  }
-
-  function onAnimationFrame(time, frame) {
-    // フレームごとの処理を行うコード
-    // ...
-
-    session.requestAnimationFrame(onAnimationFrame);
-  }
-}
 
 
 
@@ -183,36 +25,101 @@ startARButton.addEventListener('click', function () {
 
 
 
+
+
+
+
+ <!DOCTYPE html>
+ <html lang="en">
+   <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Three.js AR Example</title>
+     <style>
+       body { margin: 0; overflow: hidden; }
+     </style>
+   </head>
  
-      // function startARSession() {
-      //   // ARセッションを開始するコード
-      //   navigator.xr.isSessionSupported('immersive-ar').then((supported) => {
-      //     if (supported) {
-      //       navigator.xr.requestSession('immersive-ar', { requiredFeatures: ['hit-test'] }).then((session) => {
-      //         session.addEventListener('select', onSelect);
-      //         session.addEventListener('selectstart', onSelectStart);
-      //         session.addEventListener('selectend', onSelectEnd);
-      //         // 平面検知などのセッション設定を行います
-      //         // ...
+   <body>
+     <!-- ライブラリ -->
+     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script> -->
+     <!-- <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/jsm/webxr/ARButton.js"></script> -->
+     
+     <script type="module">
+       // Three.module.js用ライブラリ
+       import * as THREE from 'https://cdn.skypack.dev/three@0.135.0/build/three.module.js';
+       // ARButton用ライブラリ
+       import { ARButton } from 'https://cdn.skypack.dev/three@0.135.0/examples/jsm/webxr/ARButton.js';
+ 
+       // WebGLRendererを作成し、カメラを設定します。
+       const renderer = new THREE.WebGLRenderer({ antialias: true, xrCompatible: true });
+       renderer.setSize(window.innerWidth, window.innerHeight);
+       document.body.appendChild(renderer.domElement);
+ 
+       const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+ 
+       // シーンを作成します。
+       const scene = new THREE.Scene();
+ 
+       // ARセッションの開始をトリガーするためのボタンを追加します。
+       const startARButton = document.createElement('button');
+       startARButton.textContent = 'Start AR Session';
+       startARButton.classList.add('ar-button'); // CSSクラスを追加
+       document.body.appendChild(startARButton);
+ 
+       // ボタンクリックでARセッションを開始します。
+       startARButton.addEventListener('click', startARSession);
+ 
+       function startARSession() {
+         navigator.xr
+           .requestSession('immersive-ar', { requiredFeatures: ['hit-test'] })
+           .then((session) => {
+             renderer.xr.setSession(session); // セッションをrendererに設定
+             setupARSession(session); // ARセッションの設定を行う
+             session.requestAnimationFrame(onAnimationFrame); // フレーム更新のリクエスト
+           })
+           .catch((error) => {
+             console.error('Failed to start AR session:', error);
+           });
+       }
+ 
 
-      //         // セッションを開始する
-      //         renderer.xr.setSession(session);
-      //       }).catch((error) => {
-      //         console.error('AR session request error:', error);
-      //       });
-      //     } else {
-      //       console.error('AR not supported');
-      //     }
-      //   });
-      // }
+       function setupARSession(session) {
+        // セッションの設定を行います
+        // ...
 
+        session.addEventListener('select', onSelect);
+        session.addEventListener('selectstart', onSelectStart);
+        session.addEventListener('selectend', onSelectEnd);
+      }
 
+      function onSelect(event) {
+        // 平面上にオブジェクトを配置するコード
+        const hitPoint = event.hitPoint;
+        const markGeometry = new THREE.SphereGeometry(0.05);
+        const markMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
 
+        const mark = new THREE.Mesh(markGeometry, markMaterial);
+        mark.position.copy(hitPoint);
+        scene.add(mark);
+      }
 
+      function onSelectStart(event) {
+        // オブジェクト配置のための準備処理を行うコード
+        // ...
+      }
 
+      function onSelectEnd(event) {
+        // オブジェクト配置のための後処理を行うコード
+        // ...
+      }
 
+      function onAnimationFrame(time, frame) {
+        // フレームごとの処理を行うコード
+        // ...
 
-
+        session.requestAnimationFrame(onAnimationFrame);
+      }
     </script>
 
     <!-- ボタンのレイアウト -->
@@ -224,15 +131,11 @@ startARButton.addEventListener('click', function () {
         z-index: 9999;
       }
     </style>
-
-
-
   </body>
 </html>
-   
- 
 
- 
+
+
 
 
 
