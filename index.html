@@ -70,25 +70,21 @@ https://chat.openai.com/c/4086099e-a2d7-44a7-9215-47eedcc1615e
 
 
 
-      // ボタンクリックでARセッションを開始します。
-      startARButton.addEventListener('click', function () {
-        if (renderer.xr.isPresenting) {
-          startARSession();
-        } else {
-          navigator.xr
-            .requestSession('immersive-ar', { requiredFeatures: ['hit-test'] })
-            .then((session) => {
-              // セッションを開始する前にセッションオブジェクトを取得します
-              const xrSession = renderer.xr.getSession();
-              if (xrSession) {
-                startARSession(xrSession);
-              }
-            })
-            .catch((error) => {
-              console.error('Failed to start AR session:', error);
-            });
-        }
-      });
+
+// ボタンクリックでARセッションを開始します。
+startARButton.addEventListener('click', function () {
+  navigator.xr
+    .requestSession('immersive-ar', { requiredFeatures: ['hit-test'] })
+    .then((session) => {
+      renderer.xr.setSession(session); // セッションをrendererに設定
+      startARSession(session); // ARセッションを開始する
+    })
+    .catch((error) => {
+      console.error('Failed to start AR session:', error);
+    });
+});
+
+
 
       // // ARButtonを作成し、ARセッションを開始します。
       // document.body.appendChild(ARButton.createButton(renderer, { requiredFeatures: ["hit-test"] }));          
@@ -104,38 +100,85 @@ https://chat.openai.com/c/4086099e-a2d7-44a7-9215-47eedcc1615e
       // });
 
 
-      function startARSession() {
-        // ARセッションを開始するコード
-        // ...
+      // function startARSession() {
+      //   // ARセッションを開始するコード
+      //   // ...
 
-        // 平面検知を有効化する
-        const session = renderer.xr.getSession();
-        session.addEventListener('select', onSelect);
-        session.addEventListener('selectstart', onSelectStart);
-        session.addEventListener('selectend', onSelectEnd);
+      //   // 平面検知を有効化する
+      //   const session = renderer.xr.getSession();
+      //   session.addEventListener('select', onSelect);
+      //   session.addEventListener('selectstart', onSelectStart);
+      //   session.addEventListener('selectend', onSelectEnd);
 
-        // 平面のマーク用のジオメトリやマテリアルの作成
-        const markGeometry = new THREE.SphereGeometry(0.05);
-        const markMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+      //   // 平面のマーク用のジオメトリやマテリアルの作成
+      //   const markGeometry = new THREE.SphereGeometry(0.05);
+      //   const markMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
 
-        function onSelect(event) {
-          // 平面上にオブジェクトを配置するコード
-          const hitPoint = event.hitPoint;
-          const mark = new THREE.Mesh(markGeometry, markMaterial);
-          mark.position.copy(hitPoint);
-          scene.add(mark);
-        }
+      //   function onSelect(event) {
+      //     // 平面上にオブジェクトを配置するコード
+      //     const hitPoint = event.hitPoint;
+      //     const mark = new THREE.Mesh(markGeometry, markMaterial);
+      //     mark.position.copy(hitPoint);
+      //     scene.add(mark);
+      //   }
 
-        function onSelectStart(event) {
-          // オブジェクト配置のための準備処理を行うコード
-          // ...
-        }
+      //   function onSelectStart(event) {
+      //     // オブジェクト配置のための準備処理を行うコード
+      //     // ...
+      //   }
 
-        function onSelectEnd(event) {
-          // オブジェクト配置のための後処理を行うコード
-          // ...
-        }
-      }
+      //   function onSelectEnd(event) {
+      //     // オブジェクト配置のための後処理を行うコード
+      //     // ...
+      //   }
+      // }
+
+
+
+
+      function startARSession(session) {
+  // 平面検知やオブジェクトの配置などのARセッションの設定を行います
+  // ...
+
+  session.addEventListener('select', onSelect);
+  session.addEventListener('selectstart', onSelectStart);
+  session.addEventListener('selectend', onSelectEnd);
+
+  // カメラの設定
+  session.updateRenderState({ baseLayer: new XRWebGLLayer(session, renderer.domElement) });
+
+  // セッションを開始します
+  session.requestAnimationFrame(onAnimationFrame);
+
+  function onSelect(event) {
+    // 平面上にオブジェクトを配置するコード
+    const hitPoint = event.hitPoint;
+    const mark = new THREE.Mesh(markGeometry, markMaterial);
+    mark.position.copy(hitPoint);
+    scene.add(mark);
+  }
+
+  function onSelectStart(event) {
+    // オブジェクト配置のための準備処理を行うコード
+    // ...
+  }
+
+  function onSelectEnd(event) {
+    // オブジェクト配置のための後処理を行うコード
+    // ...
+  }
+
+  function onAnimationFrame(time, frame) {
+    // フレームごとの処理を行うコード
+    // ...
+
+    session.requestAnimationFrame(onAnimationFrame);
+  }
+}
+
+
+
+
 
 
 
