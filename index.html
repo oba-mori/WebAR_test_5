@@ -29,6 +29,10 @@ https://chat.openai.com/c/4086099e-a2d7-44a7-9215-47eedcc1615e
  <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+   <meta http-equiv="Permissions-Policy" content="interest-cohort=()"/>
+
+
    <title>AR 3D Model Example</title>
    <style>
      body { margin: 0; overflow: hidden; }
@@ -63,14 +67,17 @@ https://chat.openai.com/c/4086099e-a2d7-44a7-9215-47eedcc1615e
      });
  
      // XRアニメーションフレームコールバック内でのみ更新する
-     function onAnimationFrame() {
-       renderer.setAnimationLoop(() => {
-         if (renderer.xr.isPresenting) {
-           // フレームごとの処理を記述
-           render();
-         }
-       });
-     }
+// XRアニメーションフレームコールバック内でのみ更新する
+function onAnimationFrame(timestamp, frame) {
+  renderer.setAnimationLoop(() => {
+    if (renderer.xr.isPresenting) {
+      // フレームごとの処理を記述
+      renderer.clear();
+      renderer.render(scene, camera);
+    }
+  });
+}
+
  
      function onSessionStart() {
        // ARセッションが開始された時の処理を記述
