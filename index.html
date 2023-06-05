@@ -76,15 +76,11 @@ https://chat.openai.com/c/4086099e-a2d7-44a7-9215-47eedcc1615e
        }
 
 
-       ARButton.createButton(renderer.domElement)
-        .then((button) => {
-          button.addEventListener('sessionstart', onSessionStart);
-          button.addEventListener('sessionend', onSessionEnd);
-          document.body.appendChild(button);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+       const button = ARButton.createButton(renderer);
+        button.addEventListener('sessionstart', onSessionStart);
+        button.addEventListener('sessionend', onSessionEnd);
+        document.body.appendChild(button);
+
 
  
        function render() {
